@@ -94,8 +94,11 @@ const TaksViewSwitcher = ({
             size={"sm"}
             onClick={() => {
               open();
-              hideProject && setInitialProject(paramProjectId);
-              isTasks && setInitialAssigne(tasks?.documents[0].assigneId ?? "");
+              if (hideProject) {
+                setInitialProject(paramProjectId);
+              } else if (isTasks) {
+                setInitialAssigne(tasks?.documents[0].assigneId ?? "");
+              }
             }}
           >
             <PlusIcon className="mr-2" />

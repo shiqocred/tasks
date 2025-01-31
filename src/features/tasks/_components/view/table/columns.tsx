@@ -7,7 +7,6 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   ChevronsUpDown,
-  MoreHorizontal,
   MoreVertical,
 } from "lucide-react";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";

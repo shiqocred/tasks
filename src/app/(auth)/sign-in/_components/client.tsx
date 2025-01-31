@@ -11,16 +11,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -94,16 +90,6 @@ const Client = () => {
               </Button>
             </form>
           </Form>
-          <div className="grid gap-4 mt-4">
-            <Button disabled={isPending} variant="outline" className="w-full">
-              <FcGoogle className="mr-2 size-5" />
-              Login with Google
-            </Button>
-            <Button disabled={isPending} variant="outline" className="w-full">
-              <FaGithub className="mr-2 size-5" />
-              Login with Github
-            </Button>
-          </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link href="/sign-up" className="underline">

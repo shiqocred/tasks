@@ -22,7 +22,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ArrowLeft, ImageIcon, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ProjectType } from "../server/types";
 import { useUpdateProject } from "../api/use-update-project";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useDeleteeProject } from "../api/use-delete-project";

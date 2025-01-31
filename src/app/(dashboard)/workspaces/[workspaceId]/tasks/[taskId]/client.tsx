@@ -6,14 +6,7 @@ import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
 import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { ChevronRight, Loader, Trash2 } from "lucide-react";
-import React, { useMemo } from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import React from "react";
 import { useDeleteTask } from "@/features/tasks/api/use-delete-task";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useRouter } from "next/navigation";
@@ -24,7 +17,7 @@ export const TaskIdClient = () => {
   const taskId = useTaskId();
   const router = useRouter();
 
-  const { data, isLoading, isRefetching } = useGetTask({ taskId });
+  const { data, isLoading } = useGetTask({ taskId });
   const { mutate: deleteTask, isPending: isPendingDelete } = useDeleteTask();
 
   const [DeleteDialog, confirmDelete] = useConfirm(

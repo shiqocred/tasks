@@ -1,18 +1,10 @@
 "use client";
 
-import { ChevronRight, Plus, type LucideIcon } from "lucide-react";
-
 import {
   SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { cn } from "@/lib/utils";

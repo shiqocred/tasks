@@ -5,7 +5,7 @@ import { useWorkspaceId } from "../hooks/use-workspace-id";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, LogOut, MoreVertical } from "lucide-react";
+import { ArrowLeft, ArrowRight, MoreVertical } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useGetMembers } from "@/features/members/api/use-get-member";
 import { MemberAvatar } from "@/components/member-avatar";

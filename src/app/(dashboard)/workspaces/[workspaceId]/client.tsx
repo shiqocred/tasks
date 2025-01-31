@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
 import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal";
-import { TaskType } from "@/features/tasks/server/types";
 import { AnalyticsWorkspace } from "@/features/workspaces/_components/analytics-workspace";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useGetWorkspaceAnalytics } from "@/features/workspaces/api/use-get-workspace-analytics";

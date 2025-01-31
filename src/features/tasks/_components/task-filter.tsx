@@ -36,7 +36,7 @@ const TaskFilter = ({ hideProject }: { hideProject?: boolean }) => {
     label: item.name,
   }));
 
-  const [{ assigneId, dueDate, projectId, search, status }, setFilter] =
+  const [{ assigneId, dueDate, projectId, status }, setFilter] =
     useTaskFilter();
 
   const onStatusChange = (value: string) => {

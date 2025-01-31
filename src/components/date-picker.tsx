@@ -4,9 +4,7 @@ import * as React from "react";
 import { format } from "date-fns";
 import {
   Calendar as CalendarIcon,
-  ChevronDown,
   ChevronsUpDown,
-  X,
   XCircle,
 } from "lucide-react";
 

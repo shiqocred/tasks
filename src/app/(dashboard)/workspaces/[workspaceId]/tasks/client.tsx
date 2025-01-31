@@ -1,13 +1,6 @@
 "use client";
 
 import React from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Navbar } from "@/components/navbar";
 import TaksViewSwitcher from "@/features/tasks/_components/taks-view-switcher";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";

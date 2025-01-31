@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Client, Account, Storage, Databases, Users } from "node-appwrite";
+import { Client, Account, Databases, Users } from "node-appwrite";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE } from "@/features/auth/server/constants";
 

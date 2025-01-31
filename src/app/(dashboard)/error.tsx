@@ -5,10 +5,8 @@ import React, { useEffect } from "react";
 
 const ErrorPage = ({
   error,
-  reset,
 }: {
   error: Error & { digest?: string; status: any };
-  reset: () => void;
 }) => {
   useEffect(() => {
     // Log the error to an error reporting service
