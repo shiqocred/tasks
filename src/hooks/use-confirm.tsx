@@ -11,6 +11,7 @@ import {
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ResponsiveModal } from "@/components/ui/responsive-modal";
 import React, { useState } from "react";
+import type { JSX } from "react";
 
 export const useConfirm = (
   title: string,
