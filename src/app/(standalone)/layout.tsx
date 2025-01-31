@@ -1,5 +1,4 @@
 import UserButton from "@/components/user-button";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -68,6 +67,7 @@ const StandaloneLayout = ({ children }: { children: React.ReactNode }) => {
               <p className="truncate font-semibold">So-Tasks</p>
             </div>
           </Link>
+          <UserButton />
         </nav>
         <div className="flex flex-col items-center justify-center py-4">
           {children}
