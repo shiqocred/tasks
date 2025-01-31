@@ -3,7 +3,7 @@
 import { AlertTriangle } from "lucide-react";
 import React, { useEffect } from "react";
 
-const Error = ({
+const ErrorComponent = ({
   error,
 }: {
   error: Error & { digest?: string; status: any };
@@ -20,4 +20,4 @@ const Error = ({
   );
 };
 
-export default Error;
+export default ErrorComponent;

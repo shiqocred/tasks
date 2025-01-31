@@ -1,3 +1,5 @@
+"use client";
+
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
 import { TaksStatus } from "../server/types";
 

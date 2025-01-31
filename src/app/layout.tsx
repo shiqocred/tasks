@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import QueryProviders from "@/components/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,7 @@ export default function RootLayout({
         <QueryProviders>
           <NuqsAdapter>
             <Toaster />
-            {children}
+            <Suspense>{children}</Suspense>
           </NuqsAdapter>
         </QueryProviders>
       </body>

@@ -8,10 +8,8 @@ import members from "@/features/members/server/route";
 import projects from "@/features/projects/server/route";
 import tasks from "@/features/tasks/server/route";
 
-const app = new Hono().basePath("/api");
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const routes = app
+const app = new Hono()
+  .basePath("/api")
   .route("/auth", auth)
   .route("/workspaces", worksapces)
   .route("/join", join)
@@ -24,4 +22,4 @@ export const POST = handle(app);
 export const PATCH = handle(app);
 export const DELETE = handle(app);
 
-export type AppType = typeof routes;
+export type AppType = typeof app;

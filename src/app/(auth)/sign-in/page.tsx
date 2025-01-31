@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Client from "./_components/client";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -13,9 +13,9 @@ const SignInpage = async () => {
 
   if (user) redirect("/");
   return (
-    <div>
+    <Suspense>
       <Client />
-    </div>
+    </Suspense>
   );
 };
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { parseAsBoolean, parseAsString, useQueryState } from "nuqs";
 
 export const useCreateTaskModal = () => {
