@@ -1,3 +1,5 @@
+import "server-only";
+
 import { AUTH_COOKIE } from "@/features/auth/server/constants";
 import { createAdminClient } from "@/lib/appwrite";
 import { LoginSchema } from "@/lib/schemas";
