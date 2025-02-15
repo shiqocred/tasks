@@ -13,8 +13,10 @@ import { NavMain } from "./nav-main";
 import Link from "next/link";
 import { WorkspacesSwitcher } from "./workspaces-switcher";
 import { Projects } from "./projects";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
   return (
     <Sidebar variant="floating" collapsible="icon" {...props}>
       <SidebarHeader className="py-4 overflow-x-hidden">
@@ -85,7 +87,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain />
         <SidebarSeparator />
-        <Projects />
+        {pathname !== "/" && <Projects />}
       </SidebarContent>
       <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
       <SidebarRail />
