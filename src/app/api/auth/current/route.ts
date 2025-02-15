@@ -10,8 +10,7 @@ export const GET = async () => {
         email: user.email,
       },
     });
-  } catch (error) {
-    console.log("Internal Error", error);
+  } catch {
     return new Response("Internal Error", { status: 500 });
   }
 };

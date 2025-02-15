@@ -66,8 +66,7 @@ const useApi = (url: string) => {
 
         return data;
       },
-      enabled:
-        params === undefined || Object.values(params).every((val) => !!val),
+      enabled: !params || Object.values(params).every((val) => !!val),
     });
   };
 
