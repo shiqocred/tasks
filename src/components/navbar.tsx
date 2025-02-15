@@ -2,10 +2,8 @@
 
 import React from "react";
 import UserButton from "./user-button";
-import { Button } from "./ui/button";
-import { Sidebar } from "lucide-react";
 import { Separator } from "./ui/separator";
-import { useSidebar } from "./ui/sidebar";
+import { SidebarTrigger, useSidebar } from "./ui/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,17 +19,10 @@ export const Navbar = ({
   isLoading: boolean;
   breadcrumb?: { label?: string; href?: string; loading?: string }[];
 }) => {
-  const { toggleSidebar } = useSidebar();
   return (
     <header className="flex h-[74px] shrink-0 items-center gap-2 transition-[width,height] ease-linear w-full justify-between px-3 border-b border-gray-300">
       <div className="flex items-center gap-2">
-        <Button
-          type="button"
-          onClick={toggleSidebar}
-          className="w-fit h-fit p-1 bg-transparent text-black hover:bg-neutral-100 shadow-none"
-        >
-          <Sidebar className="size-6" />
-        </Button>
+        <SidebarTrigger />
         <Separator orientation="vertical" className="mr-2 h-4" />
         <Breadcrumb>
           {isLoading ? (
