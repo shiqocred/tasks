@@ -1,4 +1,6 @@
-import { Client, Account, Databases, Users, Storage } from "node-appwrite";
+import "server-only";
+
+import { Users, Client, Account, Databases, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE } from "@/features/auth/server/constants";
 
@@ -34,7 +36,7 @@ export const createAdminClient = async () => {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-    .setKey(process.env.NEXT_APPWRITE_KEY!);
+    .setKey(process.env.NEXT_PUBLIC_APPWRITE_KEY!);
 
   return {
     get account() {
