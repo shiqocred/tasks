@@ -3,7 +3,7 @@
 import React from "react";
 import UserButton from "./user-button";
 import { Separator } from "./ui/separator";
-import { SidebarTrigger, useSidebar } from "./ui/sidebar";
+import { SidebarTrigger } from "./ui/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
