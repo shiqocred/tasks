@@ -22,11 +22,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useLogin } from "../../../../features/auth/api/use-login";
-import { LoginSchema } from "../../../../features/auth/server/schemas";
+import { LoginSchema } from "@/lib/schemas";
+import { useAuth } from "@/features/api";
 
 const Client = () => {
-  const { mutate, isPending } = useLogin();
+  const { mutate, isPending } = useAuth().login;
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -35,7 +35,7 @@ const Client = () => {
     },
   });
   const onSubmit = (data: z.infer<typeof LoginSchema>) => {
-    mutate({ json: data });
+    mutate(data);
   };
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">

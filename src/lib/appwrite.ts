@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Client, Account, Databases, Users } from "node-appwrite";
+import { Client, Account, Databases, Users, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE } from "@/features/auth/server/constants";
 
@@ -12,19 +12,23 @@ export const createSessionClient = async () => {
 
   const session = cookie.get(AUTH_COOKIE);
 
-  if (!session || !session?.value) {
+  if (!session?.value) {
     throw new Error("Unauthorized");
   }
 
   client.setSession(session.value);
 
+  const account = new Account(client);
+  const databases = new Databases(client);
+  const storage = new Storage(client);
+
+  const user = await account.get();
+
   return {
-    get account() {
-      return new Account(client);
-    },
-    get databases() {
-      return new Databases(client);
-    },
+    account,
+    databases,
+    storage,
+    user,
   };
 };
 

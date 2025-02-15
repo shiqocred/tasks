@@ -8,7 +8,6 @@ import {
   SidebarGroupLabel,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useGetListWorkspaces } from "@/features/workspaces/api/use-get-list-workspace";
 import { WorkspaceAvatar } from "../workspace-avatar";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { usePathname, useRouter } from "next/navigation";
@@ -18,11 +17,13 @@ import { Command, CommandGroup, CommandItem, CommandList } from "../ui/command";
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useWorkspaces } from "@/features/api";
 
 export function WorkspacesSwitcher() {
   const workspaceId = useWorkspaceId();
   const { isMobile, toggleSidebar, state } = useSidebar();
-  const { data: workspaces, isLoading } = useGetListWorkspaces();
+
+  const { data: workspaces, isLoading } = useWorkspaces().list;
   const [openWorkspace, setOpenWorkspace] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -36,7 +37,7 @@ export function WorkspacesSwitcher() {
     if (isMobile) {
       toggleSidebar();
     }
-  }, [pathname]);
+  }, [toggleSidebar, isMobile, pathname]);
 
   return (
     <SidebarGroup>

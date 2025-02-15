@@ -2,23 +2,22 @@
 
 import { Button } from "@/components/ui/button";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
-import { useGetProject } from "@/features/projects/api/use-get-project";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
 import TaksViewSwitcher from "@/features/tasks/_components/taks-view-switcher";
 import { Loader, PencilIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Navbar } from "@/components/navbar";
-import { useGetProjectAnalytics } from "@/features/projects/api/use-get-project-analytics";
 import { AnalyticsProject } from "@/features/projects/_components/analytics-project";
+import { useProjects } from "@/features/api";
 
 export const ProjectIdClient = () => {
   const projectId = useProjectId();
-  const { data: project, isLoading: isLoadingProject } = useGetProject({
+  const { data: project, isLoading: isLoadingProject } = useProjects().show({
     projectId,
   });
   const { data: analytics, isLoading: isLoadingAnalytics } =
-    useGetProjectAnalytics({ projectId });
+    useProjects().analytics({ projectId });
 
   if (isLoadingProject || isLoadingAnalytics) {
     return (

@@ -1,8 +1,7 @@
 import { MemberAvatar } from "@/components/member-avatar";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
-import { ProjectType } from "@/features/projects/server/types";
-import { TaksStatus } from "@/features/tasks/server/types";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { ProjectType, TaksStatus } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";

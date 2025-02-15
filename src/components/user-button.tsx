@@ -1,6 +1,5 @@
 "use client";
 
-import { useCurrent } from "@/features/auth/api/use-current";
 import { Loader, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import {
@@ -10,11 +9,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Separator } from "./ui/separator";
-import { useLogout } from "@/features/auth/api/use-logout";
+import { useAuth } from "@/features/api";
 
 const UserButton = () => {
-  const { data: user, isLoading } = useCurrent();
-  const { mutate: logout } = useLogout();
+  const { data: user, isLoading } = useAuth().current;
+  const { mutate: logout } = useAuth().logout;
 
   if (isLoading) {
     return (

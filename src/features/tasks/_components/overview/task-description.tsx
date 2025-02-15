@@ -1,24 +1,21 @@
 import React, { FormEvent } from "react";
-import { TaskType } from "../../server/types";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, XIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useUpdateTask } from "../../api/use-update-task";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { useTasks } from "@/features/api";
+import { TaskType } from "@/lib/schemas";
 
 export const TaskDescription = ({ task }: { task: TaskType }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [value, setValue] = React.useState(task.description ?? "");
-  const { mutate, isPending } = useUpdateTask();
+  const { mutate, isPending } = useTasks().patch({ taskId: task.$id });
 
   const handleSave = (e: FormEvent) => {
     e.preventDefault();
     mutate(
-      {
-        param: { taskId: task.$id },
-        json: { description: value },
-      },
+      { description: value },
       {
         onSuccess: () => {
           setIsEditing(false);

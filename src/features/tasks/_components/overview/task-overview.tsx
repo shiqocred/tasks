@@ -1,5 +1,4 @@
 import React from "react";
-import { TaskType } from "../../server/types";
 import { Button } from "@/components/ui/button";
 import { PencilIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -9,6 +8,7 @@ import { TaskDate } from "../view/table/task-date";
 import { Badge } from "@/components/ui/badge";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { useEditTaskModal } from "../../hooks/use-edit-task-modal";
+import { TaskType } from "@/lib/schemas";
 
 export const TaskOverview = ({ task }: { task: TaskType }) => {
   const { open } = useEditTaskModal();

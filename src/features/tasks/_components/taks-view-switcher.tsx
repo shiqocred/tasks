@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import React, { useCallback } from "react";
 import { useCreateTaskModal } from "../hooks/use-create-task-modal";
-import { useGetListTasks } from "../api/use-get-list-tasks";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useQueryState } from "nuqs";
 import TaskFilter from "./task-filter";
@@ -20,10 +19,10 @@ import { useTaskFilter } from "../hooks/use-task-filter";
 import { DataTable } from "./view/table/data-table";
 import { columns } from "./view/table/columns";
 import { DataKanban } from "./view/kanban/data-kanban";
-import { TaksStatus } from "../server/types";
-import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks";
 import { DataCalendar } from "./view/calendar/data-calendar";
 import { useProjectId } from "@/features/projects/hooks/use-project-id";
+import { useTasks } from "@/features/api";
+import { TaksStatus } from "@/lib/schemas";
 
 const TaksViewSwitcher = ({
   hideProject,
@@ -40,10 +39,10 @@ const TaksViewSwitcher = ({
     defaultValue: "table",
   });
 
-  const { mutate: bulkUpdate } = useBulkUpdateTasks();
+  const { mutate: bulkUpdate } = useTasks().bulkUpdate;
 
   const { open, setInitialProject, setInitialAssigne } = useCreateTaskModal();
-  const { data: tasks, isLoading: isLoadingTask } = useGetListTasks({
+  const { data: tasks, isLoading: isLoadingTask } = useTasks().list({
     workspaceId,
     assigneId: isTasks ? "user-assigne" : assigneId,
     dueDate,
@@ -55,7 +54,7 @@ const TaksViewSwitcher = ({
   const onKanbanChange = useCallback(
     (tasks: { $id: string; status: TaksStatus; position: number }[]) => {
       bulkUpdate({
-        json: { tasks },
+        tasks,
       });
     },
     [bulkUpdate]

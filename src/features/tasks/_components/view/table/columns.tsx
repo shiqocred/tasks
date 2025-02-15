@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { TaskType } from "../../../server/types";
 import { Button } from "@/components/ui/button";
 import {
   ArrowDownIcon,
@@ -15,6 +14,7 @@ import { TaskDate } from "./task-date";
 import { Badge } from "@/components/ui/badge";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import { TaskAction } from "./task-action";
+import { TaskType } from "@/lib/schemas";
 
 export const columns: ColumnDef<TaskType>[] = [
   {

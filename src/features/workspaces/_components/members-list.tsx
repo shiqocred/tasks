@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, MoreVertical } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useGetMembers } from "@/features/members/api/use-get-member";
 import { MemberAvatar } from "@/components/member-avatar";
 import {
   DropdownMenu,
@@ -15,15 +14,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDeleteMember } from "@/features/members/api/use-delete-member";
-import { MemberRole } from "@/features/members/types";
-import { useUpdateMember } from "@/features/members/api/use-update-member";
 import { useConfirm } from "@/hooks/use-confirm";
 import { Badge } from "@/components/ui/badge";
+import { MemberRole } from "@/lib/schemas";
+import { useMembers } from "@/features/api";
+import { useRouter } from "next/navigation";
 
 export const MembersList = () => {
   const workspaceId = useWorkspaceId();
-  const { data } = useGetMembers({ workspaceId });
+  const router = useRouter();
+  const { data } = useMembers().list({ workspaceId });
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Remove member",
@@ -37,11 +37,13 @@ export const MembersList = () => {
     "destructive"
   );
 
-  const { mutate: deleteMember, isPending: isDeleteMember } = useDeleteMember();
-  const { mutate: updateMember, isPending: isUpdateMember } = useUpdateMember();
+  const { mutate: deleteMember, isPending: isDeleteMember } =
+    useMembers().delete;
+  const { mutate: updateMember, isPending: isUpdateMember } =
+    useMembers().patch;
 
   const handleUpdateMember = (memberId: string, role: MemberRole) => {
-    updateMember({ json: { role }, param: { memberId } });
+    updateMember({ memberId, role });
   };
 
   const handleDeleteMember = async (memberId: string) => {
@@ -49,14 +51,7 @@ export const MembersList = () => {
 
     if (!ok) return;
 
-    deleteMember(
-      { param: { memberId } },
-      {
-        onSuccess: () => {
-          window.location.reload();
-        },
-      }
-    );
+    deleteMember({ memberId });
   };
 
   const handleLeave = async (memberId: string) => {
@@ -65,10 +60,10 @@ export const MembersList = () => {
     if (!ok) return;
 
     deleteMember(
-      { param: { memberId } },
+      { memberId },
       {
         onSuccess: () => {
-          window.location.href = "/";
+          router.push("/");
         },
       }
     );

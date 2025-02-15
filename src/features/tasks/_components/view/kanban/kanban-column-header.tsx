@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal";
-import { TaksStatus } from "@/features/tasks/server/types";
+import { TaksStatus } from "@/lib/schemas";
 import { snakeCaseToTitleCase } from "@/lib/utils";
 import {
   CircleCheck,

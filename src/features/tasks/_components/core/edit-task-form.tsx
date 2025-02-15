@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { createTaskSchema } from "../../server/schemas";
 import { DatePicker } from "@/components/date-picker";
 import {
   Select,
@@ -28,9 +27,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/components/member-avatar";
-import { TaksStatus, TaskType } from "../../server/types";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
-import { useUpdateTask } from "../../api/use-update-task";
+import { createTaskSchema, TaksStatus, TaskType } from "@/lib/schemas";
+import { useTasks } from "@/features/api";
 
 export const EditTaskForm = ({
   onCancel,
@@ -43,12 +42,10 @@ export const EditTaskForm = ({
   memberOptions: { id: string; name: string }[];
   initialValue: TaskType;
 }) => {
-  const { mutate, isPending } = useUpdateTask();
+  const { mutate, isPending } = useTasks().patch({ taskId: initialValue.$id });
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
-    resolver: zodResolver(
-      createTaskSchema.omit({ workspaceId: true, description: true })
-    ),
+    resolver: zodResolver(createTaskSchema),
     defaultValues: {
       ...initialValue,
       dueDate: initialValue.dueDate
@@ -64,15 +61,12 @@ export const EditTaskForm = ({
         ? new Date(initialValue.dueDate)
         : undefined,
     });
-  }, [initialValue]);
+  }, [form, initialValue]);
 
   const handleSubmit = (value: z.infer<typeof createTaskSchema>) => {
-    mutate(
-      { json: value, param: { taskId: initialValue.$id } },
-      {
-        onSuccess: () => onCancel?.(),
-      }
-    );
+    mutate(value, {
+      onSuccess: () => onCancel?.(),
+    });
   };
 
   return (

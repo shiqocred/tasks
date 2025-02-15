@@ -15,26 +15,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { updateProjectSchema } from "../server/schemas";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ArrowLeft, ImageIcon, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUpdateProject } from "../api/use-update-project";
 import { useConfirm } from "@/hooks/use-confirm";
-import { useDeleteeProject } from "../api/use-delete-project";
 import { useProjectId } from "../hooks/use-project-id";
-import { useGetProject } from "../api/use-get-project";
+import { useProjects } from "@/features/api";
+import { updateProjectSchema } from "@/lib/schemas";
 
 export const EditProjectForm = ({ onCancel }: { onCancel?: () => void }) => {
   const projectId = useProjectId();
-  const { data: initialValue, isLoading } = useGetProject({ projectId });
-  const { mutate, isPending } = useUpdateProject();
-  const { mutate: deleteProject, isPending: isDeletingProject } =
-    useDeleteeProject();
   const router = useRouter();
+
+  const { data: initialValue, isLoading } = useProjects().show({ projectId });
+  const { mutate, isPending } = useProjects().patch({ projectId });
+  const { mutate: deleteProject, isPending: isDeletingProject } =
+    useProjects().delete({ projectId });
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete Project",
@@ -57,34 +56,27 @@ export const EditProjectForm = ({ onCancel }: { onCancel?: () => void }) => {
       name: initialValue?.name ?? "",
       image: initialValue?.imageUrl ?? "",
     });
-  }, [initialValue]);
+  }, [form, initialValue]);
 
   const handleDelete = async () => {
     const ok = await confirmDelete();
 
     if (!ok) return;
 
-    deleteProject(
-      {
-        param: { projectId: initialValue?.$id ?? "" },
+    deleteProject(undefined, {
+      onSuccess: () => {
+        router.push(`/workspaces/${initialValue?.workspaceId}`);
       },
-      {
-        onSuccess: () => {
-          window.location.href = `/workspaces/${initialValue?.workspaceId}`;
-        },
-      }
-    );
+    });
   };
 
   const handleSubmit = (value: z.infer<typeof updateProjectSchema>) => {
-    const finalValues = {
-      ...value,
-      image: value.image instanceof File ? value.image : "",
-    };
-    mutate({
-      form: finalValues,
-      param: { projectId: initialValue?.$id ?? "" },
-    });
+    const formData = new FormData();
+    formData.append("name", value.name ?? "");
+    if (value.image instanceof File) {
+      formData.append("image", value.image);
+    }
+    mutate(formData);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

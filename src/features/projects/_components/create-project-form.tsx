@@ -22,39 +22,37 @@ import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useCreateProject } from "../api/use-create-project";
-import { createProjectSchema } from "../server/schemas";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
+import { createProjectSchema } from "@/lib/schemas";
+import { useProjects } from "@/features/api";
 
 export const CreateProjectForm = ({ onCancel }: { onCancel?: () => void }) => {
   const workspaceId = useWorkspaceId();
-  const { mutate, isPending } = useCreateProject();
+  const { mutate, isPending } = useProjects().create;
   const router = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof createProjectSchema>>({
-    resolver: zodResolver(createProjectSchema.omit({ workspaceId: true })),
+    resolver: zodResolver(createProjectSchema),
     defaultValues: {
       name: "",
+      image: undefined,
     },
   });
 
   const handleSubmit = (value: z.infer<typeof createProjectSchema>) => {
-    const finalValues = {
-      ...value,
-      image: value.image instanceof File ? value.image : "",
-      workspaceId,
-    };
-    mutate(
-      { form: finalValues },
-      {
-        onSuccess: ({ data }) => {
-          form.reset();
-          router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
-        },
-      }
-    );
+    const formData = new FormData();
+    formData.append("name", value.name ?? "");
+    if (value.image instanceof File) {
+      formData.append("image", value.image);
+    }
+    mutate(formData, {
+      onSuccess: ({ data }) => {
+        form.reset();
+        router.push(`/workspaces/${workspaceId}/projects/${data.$id}`);
+      },
+    });
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -3,22 +3,23 @@
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
-import { useGetTask } from "@/features/tasks/api/use-get-task";
 import { useTaskId } from "@/features/tasks/hooks/use-task-id";
 import { ChevronRight, Loader, Trash2 } from "lucide-react";
 import React from "react";
-import { useDeleteTask } from "@/features/tasks/api/use-delete-task";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useRouter } from "next/navigation";
 import { TaskOverview } from "@/features/tasks/_components/overview/task-overview";
 import { TaskDescription } from "@/features/tasks/_components/overview/task-description";
+import { useTasks } from "@/features/api";
 
 export const TaskIdClient = () => {
   const taskId = useTaskId();
   const router = useRouter();
 
-  const { data, isLoading } = useGetTask({ taskId });
-  const { mutate: deleteTask, isPending: isPendingDelete } = useDeleteTask();
+  const { data, isLoading } = useTasks().show({ taskId });
+  const { mutate: deleteTask, isPending: isPendingDelete } = useTasks().delete({
+    taskId: data?.$id ?? "",
+  });
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete Task",
@@ -31,14 +32,11 @@ export const TaskIdClient = () => {
 
     if (!ok) return;
 
-    deleteTask(
-      { param: { taskId: data?.$id ?? "" } },
-      {
-        onSuccess: () => {
-          router.push(`/workspaces/${data?.workspaceId}/tasks`);
-        },
-      }
-    );
+    deleteTask(undefined, {
+      onSuccess: () => {
+        router.push(`/workspaces/${data?.workspaceId}/tasks`);
+      },
+    });
   };
 
   if (isLoading) {

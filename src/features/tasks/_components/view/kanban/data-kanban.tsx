@@ -1,4 +1,3 @@
-import { TaksStatus, TaskType } from "@/features/tasks/server/types";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   DragDropContext,
@@ -8,6 +7,7 @@ import {
 } from "@hello-pangea/dnd";
 import { KanbanColumnHeader } from "./kanban-column-header";
 import { KanbanCard } from "./kanban-card";
+import { TaksStatus, TaskType } from "@/lib/schemas";
 
 const boards: TaksStatus[] = [
   TaksStatus.BACKLOG,

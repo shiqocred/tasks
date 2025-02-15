@@ -2,11 +2,10 @@
 
 import React from "react";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { useGetListProjects } from "@/features/projects/api/use-get-list-projects";
-import { useGetMembers } from "@/features/members/api/use-get-member";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader } from "lucide-react";
 import { CreateTaskForm } from "./create-task-form";
+import { useMembers, useProjects } from "@/features/api";
 
 export const CreateTasksFormWrapper = ({
   onCancel,
@@ -21,10 +20,10 @@ export const CreateTasksFormWrapper = ({
 }) => {
   const workspaceId = useWorkspaceId();
 
-  const { data: projects, isLoading: isLoadingProjects } = useGetListProjects({
+  const { data: projects, isLoading: isLoadingProjects } = useProjects().list({
     workspaceId,
   });
-  const { data: members, isLoading: isLoadingMembers } = useGetMembers({
+  const { data: members, isLoading: isLoadingMembers } = useMembers().list({
     workspaceId,
   });
 

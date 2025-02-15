@@ -1,4 +1,3 @@
-import { TaskType } from "@/features/tasks/server/types";
 import React from "react";
 import { TaskAction } from "../table/task-action";
 import { MoreHorizontal } from "lucide-react";
@@ -7,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { MemberAvatar } from "@/components/member-avatar";
 import { TaskDate } from "../table/task-date";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
+import { TaskType } from "@/lib/schemas";
 
 export const KanbanCard = ({ task }: { task: TaskType }) => {
   return (

@@ -10,17 +10,17 @@ import {
 } from "../ui/sidebar";
 import { RiAddCircleFill } from "react-icons/ri";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { useGetListProjects } from "@/features/projects/api/use-get-list-projects";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
 import { AlertTriangle, Database, Loader } from "lucide-react";
+import { useProjects } from "@/features/api";
 
 export const Projects = () => {
   const workspaceId = useWorkspaceId();
-  const { data, error, isLoading } = useGetListProjects({
+  const { data, error, isLoading } = useProjects().list({
     workspaceId,
   });
   const pathname = usePathname();

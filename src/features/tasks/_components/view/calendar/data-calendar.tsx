@@ -1,4 +1,3 @@
-import { TaskType } from "@/features/tasks/server/types";
 import React, { useState } from "react";
 import { enUS } from "date-fns/locale";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
@@ -15,6 +14,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./data-calendar.css";
 import { EventCard } from "./event-card";
 import { CustomToolbar } from "./custom-toolbar";
+import { TaskType } from "@/lib/schemas";
 
 const locales = {
   "en-US": enUS,

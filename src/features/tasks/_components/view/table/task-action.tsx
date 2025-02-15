@@ -13,10 +13,10 @@ import {
   TrashIcon,
 } from "lucide-react";
 import React, { ReactNode } from "react";
-import { useDeleteTask } from "../../../api/use-delete-task";
 import Link from "next/link";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useEditTaskModal } from "../../../hooks/use-edit-task-modal";
+import { useTasks } from "@/features/api";
 
 export const TaskAction = ({
   children,
@@ -37,12 +37,14 @@ export const TaskAction = ({
 
   const { open } = useEditTaskModal();
 
-  const { mutate: deleteTask, isPending: isPendingDelete } = useDeleteTask();
+  const { mutate: deleteTask, isPending: isPendingDelete } = useTasks().delete({
+    taskId: id,
+  });
 
   const handleDelete = async () => {
     const ok = await confirmDelete();
     if (!ok) return;
-    deleteTask({ param: { taskId: id } });
+    deleteTask();
   };
   return (
     <DropdownMenu modal={false}>

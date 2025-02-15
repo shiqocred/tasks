@@ -15,22 +15,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createWorkspaceSchema } from "../server/schemas";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useCreateWorkspace } from "../api/use-create-workspace";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { createWorkspaceSchema } from "@/lib/schemas";
+import { useWorkspaces } from "@/features/api";
 
 export const CreateWorkspaceForm = ({
   onCancel,
 }: {
   onCancel?: () => void;
 }) => {
-  const { mutate, isPending } = useCreateWorkspace();
+  const { mutate, isPending } = useWorkspaces().create;
   const router = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,19 +43,20 @@ export const CreateWorkspaceForm = ({
   });
 
   const handleSubmit = (value: z.infer<typeof createWorkspaceSchema>) => {
-    const finalValues = {
-      ...value,
-      image: value.image instanceof File ? value.image : "",
-    };
-    mutate(
-      { form: finalValues },
-      {
-        onSuccess: ({ data }) => {
-          form.reset();
-          router.push(`/workspaces/${data.$id}`);
-        },
-      }
-    );
+    const formData = new FormData();
+
+    formData.append("name", value.name);
+
+    if (value.image instanceof File) {
+      formData.append("image", value.image);
+    }
+
+    mutate(formData, {
+      onSuccess: ({ data }) => {
+        form.reset();
+        router.push(`/workspaces/${data.$id}`);
+      },
+    });
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

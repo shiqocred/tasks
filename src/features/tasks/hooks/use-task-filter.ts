@@ -1,7 +1,7 @@
 "use client";
 
+import { TaksStatus } from "@/lib/schemas";
 import { parseAsString, parseAsStringEnum, useQueryStates } from "nuqs";
-import { TaksStatus } from "../server/types";
 
 export const useTaskFilter = () => {
   return useQueryStates({

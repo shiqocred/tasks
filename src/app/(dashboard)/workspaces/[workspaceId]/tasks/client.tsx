@@ -4,13 +4,13 @@ import React from "react";
 import { Navbar } from "@/components/navbar";
 import TaksViewSwitcher from "@/features/tasks/_components/taks-view-switcher";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { Loader } from "lucide-react";
+import { useWorkspaces } from "@/features/api";
 
 export const TaskClient = () => {
   const workspaceId = useWorkspaceId();
 
-  const { data, isLoading } = useGetWorkspace({ workspaceId });
+  const { data, isLoading } = useWorkspaces().show({ workspaceId });
 
   if (isLoading) {
     return (

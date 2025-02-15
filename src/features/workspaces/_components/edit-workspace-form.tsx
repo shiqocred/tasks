@@ -15,34 +15,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { updateWorkspaceSchema } from "../server/schemas";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
 import { ArrowLeft, Copy, ImageIcon, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useUpdateWorkspace } from "../api/use-update-workspace";
 import { useConfirm } from "@/hooks/use-confirm";
-import { useDeleteWorkspace } from "@/features/workspaces/api/use-delete-workspace";
 import { toast } from "sonner";
-import { useResetInviteCode } from "../api/use-reset-invite-code";
 import { useOrigin } from "@/hooks/use-origin";
 import { useWorkspaceId } from "../hooks/use-workspace-id";
-import { useGetWorkspace } from "../api/use-get-workspace";
+import { updateWorkspaceSchema } from "@/lib/schemas";
+import { useWorkspaces } from "@/features/api";
 
 export const EditWorkspaceForm = ({ onCancel }: { onCancel?: () => void }) => {
   const workspaceId = useWorkspaceId();
   const origin = useOrigin();
-
-  const { mutate, isPending } = useUpdateWorkspace();
-  const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } =
-    useDeleteWorkspace();
-  const { mutate: resetInviteCode, isPending: isResetInviteCode } =
-    useResetInviteCode();
   const router = useRouter();
 
-  const { data: initialValue, isLoading } = useGetWorkspace({ workspaceId });
+  const { mutate, isPending } = useWorkspaces().patch({ workspaceId });
+  const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } =
+    useWorkspaces().delete({ workspaceId });
+  const { mutate: resetInviteCode, isPending: isResetInviteCode } =
+    useWorkspaces().resetInviteCode({ workspaceId });
+
+  const { data: initialValue, isLoading } = useWorkspaces().show({
+    workspaceId,
+  });
 
   const [DeleteDialog, confirmDelete] = useConfirm(
     "Delete Workspace",
@@ -70,43 +69,37 @@ export const EditWorkspaceForm = ({ onCancel }: { onCancel?: () => void }) => {
       name: initialValue?.name ?? "",
       image: initialValue?.imageUrl ?? "",
     });
-  }, [initialValue]);
+  }, [form, initialValue]);
 
   const handleResetLink = async () => {
     const ok = await confrimResetInviteCode();
 
     if (!ok) return;
 
-    resetInviteCode({
-      param: { workspaceId: initialValue?.$id ?? "" },
-    });
+    resetInviteCode();
   };
   const handleDelete = async () => {
     const ok = await confirmDelete();
 
     if (!ok) return;
 
-    deleteWorkspace(
-      {
-        param: { workspaceId: initialValue?.$id ?? "" },
+    deleteWorkspace(undefined, {
+      onSuccess: () => {
+        router.push("/");
       },
-      {
-        onSuccess: () => {
-          window.location.href = "/";
-        },
-      }
-    );
+    });
   };
 
   const handleSubmit = (value: z.infer<typeof updateWorkspaceSchema>) => {
-    const finalValues = {
-      ...value,
-      image: value.image instanceof File ? value.image : "",
-    };
-    mutate({
-      form: finalValues,
-      param: { workspaceId: initialValue?.$id ?? "" },
-    });
+    const formData = new FormData();
+
+    formData.append("name", value.name ?? "");
+
+    if (value.image instanceof File) {
+      formData.append("image", value.image);
+    }
+
+    mutate(formData);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

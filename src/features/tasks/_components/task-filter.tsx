@@ -8,20 +8,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetMembers } from "@/features/members/api/use-get-member";
-import { useGetListProjects } from "@/features/projects/api/use-get-list-projects";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { FolderIcon, ListChecks, UserIcon } from "lucide-react";
-import { TaksStatus } from "../server/types";
 import { useTaskFilter } from "../hooks/use-task-filter";
 import { DatePicker } from "@/components/date-picker";
+import { TaksStatus } from "@/lib/schemas";
+import { useMembers, useProjects } from "@/features/api";
 
 const TaskFilter = ({ hideProject }: { hideProject?: boolean }) => {
   const workspaceId = useWorkspaceId();
-  const { data: projects, isLoading: isLoadingProject } = useGetListProjects({
+  const { data: projects, isLoading: isLoadingProject } = useProjects().list({
     workspaceId,
   });
-  const { data: members, isLoading: isLoadingMember } = useGetMembers({
+  const { data: members, isLoading: isLoadingMember } = useMembers().list({
     workspaceId,
   });
 

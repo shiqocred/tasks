@@ -3,26 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useJoinWorkspace } from "@/features/join/api/use-join-workspace";
 import { useInviteCode } from "@/features/join/hooks/use-invite-code";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useGetWorkspaceInfo } from "../api/use-get-workspace-info";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
 import { ArrowLeftIcon, HomeIcon, Loader, UsersIcon } from "lucide-react";
+import { useJoin } from "@/features/api";
 
 export const JoinWorkspaceForm = () => {
   const inviteCode = useInviteCode();
 
-  const { mutate, isPending } = useJoinWorkspace();
+  const { mutate, isPending } = useJoin().accept({ inviteCode });
   const router = useRouter();
-  const { data: initialValue, isLoading } = useGetWorkspaceInfo({ inviteCode });
+  const { data: initialValue, isLoading } = useJoin().info({ inviteCode });
 
   const onSubmit = async () => {
     mutate(
       {
-        json: { workspaceId: initialValue?.data?.id ?? "", code: inviteCode },
+        workspaceId: initialValue?.data?.id ?? "",
+        code: inviteCode,
       },
       {
         onSuccess: ({ data }) => {

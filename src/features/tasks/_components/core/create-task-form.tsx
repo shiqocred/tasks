@@ -19,8 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn, snakeCaseToTitleCase } from "@/lib/utils";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
-import { createTaskSchema } from "../../server/schemas";
-import { useCreateTask } from "../../api/use-create-task";
 import { DatePicker } from "@/components/date-picker";
 import {
   Select,
@@ -30,10 +28,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MemberAvatar } from "@/components/member-avatar";
-import { TaksStatus } from "../../server/types";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
 import { Label } from "@/components/ui/label";
 import { ChevronsUpDownIcon } from "lucide-react";
+import { createTaskSchema, TaksStatus } from "@/lib/schemas";
+import { useTasks } from "@/features/api";
 
 export const CreateTaskForm = ({
   onCancel,
@@ -51,10 +50,10 @@ export const CreateTaskForm = ({
   initialAssigne: string;
 }) => {
   const workspaceId = useWorkspaceId();
-  const { mutate, isPending } = useCreateTask();
+  const { mutate, isPending } = useTasks().create;
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
-    resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
+    resolver: zodResolver(createTaskSchema),
     defaultValues: {
       workspaceId,
       name: "",
@@ -71,11 +70,11 @@ export const CreateTaskForm = ({
     if (initialAssigne) {
       form.setValue("assigneId", initialAssigne);
     }
-  }, [initialStatus, initialProject, initialAssigne]);
+  }, [form, initialStatus, initialProject, initialAssigne]);
 
   const handleSubmit = (value: z.infer<typeof createTaskSchema>) => {
     mutate(
-      { json: { ...value, workspaceId } },
+      { ...value, workspaceId },
       {
         onSuccess: () => {
           form.reset();

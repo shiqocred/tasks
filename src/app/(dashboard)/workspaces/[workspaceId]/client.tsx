@@ -5,13 +5,11 @@ import { Navbar } from "@/components/navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useWorkspaces } from "@/features/api";
 import { ProjectAvatar } from "@/features/projects/_components/project-avatar";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
 import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal";
 import { AnalyticsWorkspace } from "@/features/workspaces/_components/analytics-workspace";
-import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
-import { useGetWorkspaceAnalytics } from "@/features/workspaces/api/use-get-workspace-analytics";
-import { useGetWorkspaceDashboard } from "@/features/workspaces/api/use-get-workspace-dashboard";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { formatDistanceStrict } from "date-fns";
 import { CalendarIcon, Loader, Plus, Settings } from "lucide-react";
@@ -21,13 +19,14 @@ import React, { ReactNode } from "react";
 export const WorkspaceIdClient = () => {
   const workspaceId = useWorkspaceId();
 
-  const { data: workspace, isLoading: isLoadingWorkspace } = useGetWorkspace({
-    workspaceId,
-  });
+  const { data: workspace, isLoading: isLoadingWorkspace } =
+    useWorkspaces().show({
+      workspaceId,
+    });
   const { data: analytics, isLoading: isLoadingAnalytics } =
-    useGetWorkspaceAnalytics({ workspaceId });
+    useWorkspaces().analytics({ workspaceId });
   const { data: dashboard, isLoading: isLoadingDashboard } =
-    useGetWorkspaceDashboard({ workspaceId });
+    useWorkspaces().dashboard({ workspaceId });
 
   const { open: createProject } = useCreateProjectModal();
   const { open: createTask } = useCreateTaskModal();
