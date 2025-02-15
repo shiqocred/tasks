@@ -21,13 +21,19 @@ export const Navbar = ({
   isLoading: boolean;
   breadcrumb?: { label?: string; href?: string; loading?: string }[];
 }) => {
-  const { toggleSidebar } = useSidebar();
+  const { toggleSidebar, isMobile, setOpenMobile } = useSidebar();
   return (
     <header className="flex h-[74px] shrink-0 items-center gap-2 transition-[width,height] ease-linear w-full justify-between px-3 border-b border-gray-300">
       <div className="flex items-center gap-2">
         <Button
           type="button"
-          onClick={toggleSidebar}
+          onClick={() => {
+            if (isMobile) {
+              setOpenMobile(true);
+            } else {
+              toggleSidebar();
+            }
+          }}
           className="w-fit h-fit p-1 bg-transparent text-black hover:bg-neutral-100 shadow-none"
         >
           <Sidebar className="size-6" />
