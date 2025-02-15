@@ -28,8 +28,11 @@ const useApi = (url: string) => {
     params?: Record<string, string>,
     searchParams?: Record<string, string | undefined | null>
   ) => {
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
+    const hasValidParams =
+      params &&
+      Object.values(params).every((val) => val !== undefined && val !== null);
+    if (hasValidParams) {
+      Object.entries(hasValidParams).forEach(([key, value]) => {
         url = url.replace(`:${key}`, String(value));
       });
     }
@@ -66,7 +69,7 @@ const useApi = (url: string) => {
 
         return data;
       },
-      enabled: !!params && Object.values(params).every((val) => !!val),
+      enabled: !!hasValidParams,
     });
   };
 
