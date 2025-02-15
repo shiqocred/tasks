@@ -12,6 +12,6 @@ export const GET = async () => {
     });
   } catch (error) {
     console.log("Internal Error", error);
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Internal Error", { status: 500 });
   }
 };
