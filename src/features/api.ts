@@ -34,11 +34,19 @@ const useApi = (url: string) => {
       });
     }
 
-    const queryString = searchParams
+    const filteredSearchParams = searchParams
+      ? Object.fromEntries(
+          Object.entries(searchParams).filter(
+            ([, value]) => value !== null && value !== undefined
+          )
+        )
+      : {};
+
+    const queryString = filteredSearchParams
       ? "?" +
         new URLSearchParams(
           Object.fromEntries(
-            Object.entries(searchParams).map(([key, value]) => [
+            Object.entries(filteredSearchParams).map(([key, value]) => [
               key,
               String(value),
             ])
@@ -496,7 +504,16 @@ export const useTasks = () => {
       ],
       "tasks",
       undefined,
-      { workspaceId, projectId, assigneId, status, search, dueDate }
+      Object.fromEntries(
+        Object.entries({
+          workspaceId,
+          projectId,
+          assigneId,
+          status,
+          search,
+          dueDate,
+        }).filter(([, value]) => value !== null && value !== undefined)
+      )
     );
   const useShow = ({ taskId }: { taskId: string }) =>
     useApi(`${baseTaskUrl}/:taskId`).get<
