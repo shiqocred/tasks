@@ -82,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Link>
       </SidebarHeader>
       <SidebarSeparator />
-      <WorkspacesSwitcher />
+      {pathname !== "/" && <WorkspacesSwitcher />}
       <SidebarSeparator />
       <SidebarContent>
         <NavMain />
