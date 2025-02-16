@@ -96,13 +96,7 @@ const SidebarProvider = React.forwardRef<
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      console.log("toggleSidebar called");
-      return isMobile
-        ? setOpenMobile((open) => {
-            console.log("Toggling openMobile:", !open);
-            return !open;
-          })
-        : setOpen((open) => !open);
+      return isMobile ? setOpenMobile(true) : setOpen((open) => !open);
     }, [isMobile, setOpen, setOpenMobile]);
 
     // Adds a keyboard shortcut to toggle the sidebar.
