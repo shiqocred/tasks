@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
   return (
-    <Sidebar variant="floating" collapsible="offcanvas" {...props}>
+    <Sidebar variant="floating" collapsible="icon" {...props}>
       <SidebarHeader className="py-4 overflow-x-hidden">
         <Link
           href={"/"}

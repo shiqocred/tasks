@@ -96,7 +96,9 @@ const SidebarProvider = React.forwardRef<
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile ? setOpenMobile(true) : setOpen((open) => !open);
+      return isMobile
+        ? setOpenMobile((open) => !open)
+        : setOpen((open) => !open);
     }, [isMobile, setOpen, setOpenMobile]);
 
     // Adds a keyboard shortcut to toggle the sidebar.
@@ -107,15 +109,12 @@ const SidebarProvider = React.forwardRef<
           (event.metaKey || event.ctrlKey)
         ) {
           event.preventDefault();
-          console.log("Keyboard shortcut triggered!");
           toggleSidebar();
         }
       };
 
-      console.log("Adding keydown event listener");
       window.addEventListener("keydown", handleKeyDown);
       return () => {
-        console.log("Removing keydown event listener");
         window.removeEventListener("keydown", handleKeyDown);
       };
     }, [toggleSidebar]);
