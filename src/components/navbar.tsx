@@ -21,7 +21,7 @@ export const Navbar = ({
   isLoading: boolean;
   breadcrumb?: { label?: string; href?: string; loading?: string }[];
 }) => {
-  const { open, openMobile, setOpen, setOpenMobile, isMobile } = useSidebar();
+  const { open, setOpen, setOpenMobile, isMobile } = useSidebar();
   return (
     <header className="flex h-[74px] shrink-0 items-center gap-2 transition-[width,height] ease-linear w-full justify-between px-3 border-b border-gray-300">
       <div className="flex items-center gap-2">
@@ -29,7 +29,7 @@ export const Navbar = ({
           type="button"
           onClick={() => {
             if (isMobile) {
-              setOpenMobile(!openMobile);
+              setOpenMobile(true);
             } else {
               setOpen(!open);
             }
