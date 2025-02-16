@@ -45,6 +45,7 @@ export const CreateProjectForm = ({ onCancel }: { onCancel?: () => void }) => {
   const handleSubmit = (value: z.infer<typeof createProjectSchema>) => {
     const formData = new FormData();
     formData.append("name", value.name ?? "");
+    formData.append("workspaceId", value.workspaceId ?? "");
     if (value.image instanceof File) {
       formData.append("image", value.image);
     }
