@@ -113,12 +113,17 @@ const SidebarProvider = React.forwardRef<
           (event.metaKey || event.ctrlKey)
         ) {
           event.preventDefault();
+          console.log("Keyboard shortcut triggered!");
           toggleSidebar();
         }
       };
 
+      console.log("Adding keydown event listener");
       window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
+      return () => {
+        console.log("Removing keydown event listener");
+        window.removeEventListener("keydown", handleKeyDown);
+      };
     }, [toggleSidebar]);
 
     // We add a state so that we can do data-state="expanded" or "collapsed".
