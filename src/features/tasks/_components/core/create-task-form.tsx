@@ -113,7 +113,7 @@ export const CreateTaskForm = ({
                       <Input
                         disabled={isPending}
                         {...field}
-                        placeholder="Enter Project name"
+                        placeholder="Enter Task name"
                       />
                     </FormControl>
                     <FormMessage />
