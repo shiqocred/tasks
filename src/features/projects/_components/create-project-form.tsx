@@ -38,6 +38,7 @@ export const CreateProjectForm = ({ onCancel }: { onCancel?: () => void }) => {
     defaultValues: {
       name: "",
       image: undefined,
+      workspaceId,
     },
   });
 
