@@ -3,9 +3,16 @@ import { JoinWorkspaceForm } from "@/features/workspaces/_components/join-worksp
 import { redirect } from "next/navigation";
 import React from "react";
 
-const InviteMemberPage = async () => {
+const InviteMemberPage = async ({
+  params,
+}: {
+  params: Promise<{ inviteCode: string }>;
+}) => {
+  const { inviteCode } = await params;
+
   const user = await protect();
-  if (!user) redirect("/sign-in");
+
+  if (!user) redirect(`/join/${inviteCode}/sign-in`);
 
   return (
     <div className="w-full">
