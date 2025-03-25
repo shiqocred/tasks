@@ -100,16 +100,18 @@ export const MembersList = () => {
                 <Badge className="capitalize bg-gray-300 hover:bg-gray-300 text-black font-normal text-xs rounded-full cursor-default">
                   {member.role.toLowerCase()}
                 </Badge>
-                {member.role === MemberRole.MEMBER && member.owner && (
-                  <Button
-                    onClick={() => handleLeave(member.$id)}
-                    className="px-2.5 py-0.5 text-xs h-auto rounded-full [&_svg]:size-3 bg-red-400/80 hover:bg-red-400 text-black"
-                  >
-                    Leave
-                    <ArrowRight />
-                  </Button>
-                )}
-                {member.role === MemberRole.ADMIN && member.owner && (
+                {!data.isOwner &&
+                  member.role === MemberRole.MEMBER &&
+                  member.current && (
+                    <Button
+                      onClick={() => handleLeave(member.$id)}
+                      className="px-2.5 py-0.5 text-xs h-auto rounded-full [&_svg]:size-3 bg-red-200 hover:bg-red-300 text-black"
+                    >
+                      Leave
+                      <ArrowRight />
+                    </Button>
+                  )}
+                {data.isOwner && member.role === MemberRole.MEMBER && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant={"secondary"} size={"icon"}>

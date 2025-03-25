@@ -40,13 +40,14 @@ export const GET = async (req: NextRequest) => {
           name: user.name,
           email: user.email,
           role: member.role, // Add role to the return object
-          owner: member.userId === currentUser.$id,
+          current: member.userId === currentUser.$id,
         };
       })
     );
 
     return Response.json({
       data: {
+        isOwner: member.role === MemberRole.ADMIN,
         ...members,
         documents: populatedMembers,
       },

@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import {
   bulkTaskSchema,
   createTaskSchema,
-  JoinSchema,
   LoginSchema,
   membersSchema,
   ProjectType,
@@ -325,8 +324,8 @@ export const useJoin = () => {
   // mutation --------------------------------------------------------------------
   const useAccept = ({ inviteCode }: { inviteCode: string }) =>
     useApi(`${baseJoinUrl}/:inviteCode`)
-      .post("json")
-      .useMutate<{ data: WorkspaceType }, z.infer<typeof JoinSchema>>(
+      .post()
+      .useMutate<{ data: WorkspaceType }>(
         ["Successfully joined workspace", "join workspace"],
         ({ data }) => ["workspaces", ["workspace", data.$id]],
         false,
@@ -444,7 +443,7 @@ export const useMembers = () => {
           role: any;
           owner: boolean;
         }
-      >
+      > & { isOwner: boolean }
     >(["members"], "members", undefined, { workspaceId });
   // mutate ------------------------------------------------------------------------------------------------
   const useDelete = useApi(`${baseMemberUrl}`)

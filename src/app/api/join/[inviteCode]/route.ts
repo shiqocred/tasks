@@ -1,18 +1,32 @@
 import { DATABASE_ID, MEMBERS_ID, WORKSPACES_ID } from "@/config";
 import { getMember } from "@/features/members/utils";
 import { createSessionClient } from "@/lib/appwrite";
-import { JoinSchema, MemberRole, WorkspaceType } from "@/lib/schemas";
-import { ID } from "node-appwrite";
+import { MemberRole, WorkspaceType } from "@/lib/schemas";
+import { ID, Query } from "node-appwrite";
 
-export const POST = async (req: Request) => {
+export const POST = async (
+  req: Request,
+  { params }: { params: Promise<{ inviteCode: string }> }
+) => {
   try {
-    const body = await req.json();
-    const { code, workspaceId } = JoinSchema.parse(body);
+    const { inviteCode } = await params;
     const { user, databases } = await createSessionClient();
+
+    const workspaces = await databases.listDocuments(
+      DATABASE_ID,
+      WORKSPACES_ID,
+      [Query.equal("inviteCode", inviteCode)]
+    );
+
+    if (!workspaces || workspaces.total <= 0) {
+      return Response.json({ error: "Workspace not found" }, { status: 404 });
+    }
+
+    const workspace = workspaces.documents[0] as WorkspaceType;
 
     const isMember = await getMember({
       databases,
-      workspaceId,
+      workspaceId: workspace.$id,
       userId: user.$id,
     });
 
@@ -20,18 +34,8 @@ export const POST = async (req: Request) => {
       return Response.json({ error: "Already a member" }, { status: 400 });
     }
 
-    const workspace = await databases.getDocument<WorkspaceType>(
-      DATABASE_ID,
-      WORKSPACES_ID,
-      workspaceId
-    );
-
-    if (!workspace || workspace.inviteCode !== code) {
-      return Response.json({ error: "Invalid invite code" }, { status: 400 });
-    }
-
     await databases.createDocument(DATABASE_ID, MEMBERS_ID, ID.unique(), {
-      workspaceId,
+      workspaceId: workspace.$id,
       userId: user.$id,
       role: MemberRole.MEMBER,
     });

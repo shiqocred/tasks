@@ -19,17 +19,11 @@ export const JoinWorkspaceForm = () => {
   const { data: initialValue, isLoading } = useJoin().info({ inviteCode });
 
   const onSubmit = async () => {
-    mutate(
-      {
-        workspaceId: initialValue?.data?.id ?? "",
-        code: inviteCode,
+    mutate(undefined, {
+      onSuccess: ({ data }) => {
+        router.push(`/workspaces/${data.$id}`);
       },
-      {
-        onSuccess: ({ data }) => {
-          router.push(`/workspaces/${data.$id}`);
-        },
-      }
-    );
+    });
   };
 
   if (isLoading) {
